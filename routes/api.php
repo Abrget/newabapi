@@ -1,14 +1,19 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ApiController;
 
-// Example GET API Route
-Route::get('/users', function () {
-    return response()->json(['message' => 'API is working!']);
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });
-Route::post('status',[ApiController::class,'status']);
-Route::post('sbalance',[ApiController::class,'sbalance']);
-Route::post('fbalance',[ApiController::class,'fbalance']);
-Route::post('withdraw',[ApiController::class,'withdraw']);
-Route::post('transfer',[ApiController::class,'transfer']);

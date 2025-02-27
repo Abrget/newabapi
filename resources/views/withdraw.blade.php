@@ -48,8 +48,18 @@
                 <label class="block text-gray-700 font-semibold">Wallet Type</label>
                 <input type="number" name="walletType" class="w-full p-2 border rounded-lg" placeholder="Spot=0 Funding=1" required>
             </div>
-            
 
+         
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold">Coin List</label>
+                <div class="flex gap-4">
+             <label><input type="radio" name="radioGroup"  class="mr-2" value="option1" onchange="changeRadioName('BTC')"> BTC</label>
+            <label><input type="radio" name="radioGroup"  class="mr-2" value="option2" onchange="changeRadioName('ETH')"> ETH</label>
+            <label><input type="radio" name="radioGroup" class="mr-2" value="option3" onchange="changeRadioName('USDT')"> USDT</label>
+             <input name="coin" class="coin" value="USDT" id="coin" hidden/>
+                </div>
+            </div>
+           
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Withdraw</button>
        
 
@@ -64,4 +74,14 @@
     @endif
     </div>
 </body>
+<script>
+        function changeRadioName(selectedRadio) {
+            let inputField = document.getElementsByClassName("coin")[0]; // Access the first element with class "coin"
+            if(inputField){ // Check if the element exists
+                inputField.setAttribute("value", selectedRadio);
+                console.log("Radio value changed to:",selectedRadio);
+            }
+        }
+       
+    </script>
 </html>

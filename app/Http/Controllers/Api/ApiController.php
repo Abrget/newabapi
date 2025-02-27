@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
     public function status(Request $request){
-        return response()->json(['message' => 'API is working!']);
+        $arr = array('id' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
+
+      
         $key = $request->key;
          $secret = $request->secret;
          
