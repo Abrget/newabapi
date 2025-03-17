@@ -141,7 +141,7 @@ class ApiController extends Controller
         
  
   
-           $key = $request->key;
+       $key = $request->key;
        $secret = $request->secret;
        
        
